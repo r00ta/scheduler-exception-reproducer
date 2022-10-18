@@ -8,14 +8,18 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Path("/date")
 public class GreetingResource {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GreetingResource.class);
 
     @Inject
     ScheduledExecutorService scheduledExecutorService;
@@ -32,8 +36,10 @@ public class GreetingResource {
 
     private void updateDate(){
         if (shouldFailOrNot.shouldFail()){
+            LOGGER.info("Raising exception!");
             throw new RuntimeException("HAHAHAHAHA");
         }
+        LOGGER.info("updating new date");
         this.date = new Date();
     }
 
@@ -50,7 +56,7 @@ public class GreetingResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.TEXT_PLAIN)
     public Response hello() {
-        shouldFailOrNot.setShouldFail(true);
+        shouldFailOrNot.swapShouldFail();
         return Response.ok().build();
     }
 }

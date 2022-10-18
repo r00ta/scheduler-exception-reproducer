@@ -11,7 +11,7 @@ public class ShouldFailOrNot {
         return this.shouldFail;
     }
 
-    public void setShouldFail(boolean shouldFail){
-        this.shouldFail = shouldFail;
+    public void swapShouldFail(){
+        this.shouldFail = !shouldFail;
     }
 }
